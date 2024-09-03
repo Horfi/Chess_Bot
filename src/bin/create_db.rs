@@ -1,7 +1,6 @@
-pub mod pgn_parser;
+mod pgn_parser;
 
 use pgn_parser::{GameRecord, parse_pgn_to_game_record};
-
 use rusqlite::{params, Connection, Result};
 
 fn create_db_connection() -> Result<Connection> {

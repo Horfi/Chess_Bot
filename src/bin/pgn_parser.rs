@@ -1,4 +1,4 @@
-use chess::{ChessMove, Game, GameResult, Action, Color};
+use chess::{ChessMove, Game, Action};
 use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -24,24 +24,32 @@ pub fn parse_pgn_to_game_record(pgn: &str) -> Option<GameRecord> {
     let mut opening = String::new();
     let mut time_control = String::new();
     let mut termination = String::new();
-
+    
     for line in pgn.lines() {
-        if line.starts_with("[White ") {
+        if line.contains("White ") {
             white = line.split('"').nth(1)?.to_string();
-        } else if line.starts_with("[Black ") {
+            println!("Parsed White: {}", white);
+        } else if line.contains("Black ") {
             black = line.split('"').nth(1)?.to_string();
-        } else if line.starts_with("[Result ") {
+            println!("Parsed Black: {}", black);
+        } else if line.contains("Result ") {
             result = line.split('"').nth(1)?.to_string();
-        } else if line.starts_with("[WhiteElo ") {
+            println!("Parsed Result: {}", result);
+        } else if line.contains("WhiteElo ") {
             white_elo = line.split('"').nth(1)?.parse().unwrap_or(1600);
-        } else if line.starts_with("[BlackElo ") {
+            println!("Parsed White Elo: {}", white_elo);
+        } else if line.contains("BlackElo ") {
             black_elo = line.split('"').nth(1)?.parse().unwrap_or(1600);
-        } else if line.starts_with("[Opening ") {
+            println!("Parsed Black Elo: {}", black_elo);
+        } else if line.contains("Opening ") {
             opening = line.split('"').nth(1)?.to_string();
-        } else if line.starts_with("[TimeControl ") {
+            println!("Parsed Opening: {}", opening);
+        } else if line.contains("TimeControl ") {
             time_control = line.split('"').nth(1)?.to_string();
-        } else if line.starts_with("[Termination ") {
+            println!("Parsed Time Control: {}", time_control);
+        } else if line.contains("Termination ") {
             termination = line.split('"').nth(1)?.to_string();
+            println!("Parsed Termination: {}", termination);
         } else if line.starts_with("[") {
             continue;
         } else {
@@ -65,12 +73,19 @@ pub fn parse_pgn_to_game_record(pgn: &str) -> Option<GameRecord> {
         })
         .collect();
 
+    println!("Parsed Moves: {:?}", moves);
+
     let result_str = match result.as_str() {
         "1-0" => "White wins".to_string(),
         "0-1" => "Black wins".to_string(),
         "1/2-1/2" => "Draw".to_string(),
-        _ => "Unknown".to_string(),
+        _ => {
+            println!("Unrecognized result: {}", result);
+            "Unknown".to_string()
+        }
     };
+
+    println!("Final Result: {}", result_str);
 
     Some(GameRecord {
         white,
