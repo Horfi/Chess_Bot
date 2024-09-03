@@ -1,16 +1,26 @@
 {
     "version": "0.2.0",
     "configurations": [
-        {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug",
-            "program": "${workspaceFolder}/target/debug/Chess_Bot.exe",
-            "args": [],
-            "cwd": "${workspaceFolder}",
-            "stopOnEntry": false,
-            "preLaunchTask": "cargo build",
-            "sourceLanguages": ["rust"]
-        }
+      {
+        "name": "Debug main.rs",
+        "type": "lldb",
+        "request": "launch",
+        "program": "${workspaceFolder}/target/debug/main.exe",
+        "args": [],
+        "cwd": "${workspaceFolder}",
+        "stopOnEntry": false,
+        "sourceLanguages": ["rust"]
+      },
+      {
+        "name": "Debug create_db.rs",
+        "type": "lldb",
+        "request": "launch",
+        "program": "${workspaceFolder}/target/debug/create_db.exe",
+        "args": [],
+        "cwd": "${workspaceFolder}",
+        "stopOnEntry": false,
+        "sourceLanguages": ["rust"]
+      }
     ]
-}
+  }
+  

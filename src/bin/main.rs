@@ -1,7 +1,11 @@
+mod pgn_parser;
+
 use rusqlite::{Connection, Result};
 
+
+
 fn main() -> Result<()> {
-    let conn = Connection::open("cats.db")?;
+    let conn = Connection::open("catSSs.db")?;
 
     // Create the cat_colors table
     conn.execute(
