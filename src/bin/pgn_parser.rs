@@ -30,39 +30,39 @@ pub fn parse_pgn_to_game_record(pgn: &str) -> Option<GameRecord> {
     for line in pgn.lines() {
         let line = line.trim();  // Trim whitespace around the line
 
-        println!("Processing line: {}", line); // Debugging statement
+        //println!("Processing line: {}", line); // Debugging statement
 
         if line.starts_with("[") {
             // Parsing PGN headers (metadata)
             if line.contains("White ") {
                 white = line.split('"').nth(1).unwrap_or("").to_string();
-                println!("Parsed White: {}", white);
+                //println!("Parsed White: {}", white);
             } else if line.contains("Black ") {
                 black = line.split('"').nth(1).unwrap_or("").to_string();
-                println!("Parsed Black: {}", black);
+                //println!("Parsed Black: {}", black);
             } else if line.contains("Result ") {
                 result = line.split('"').nth(1).unwrap_or("").to_string();
-                println!("Parsed Result: {}", result);
+                //println!("Parsed Result: {}", result);
             } else if line.contains("WhiteElo ") {
                 white_elo = line.split('"').nth(1).unwrap_or("1600").parse().unwrap_or(1600);
-                println!("Parsed White Elo: {}", white_elo);
+                //println!("Parsed White Elo: {}", white_elo);
             } else if line.contains("BlackElo ") {
                 black_elo = line.split('"').nth(1).unwrap_or("1600").parse().unwrap_or(1600);
-                println!("Parsed Black Elo: {}", black_elo);
+               // println!("Parsed Black Elo: {}", black_elo);
             } else if line.contains("Opening ") {
                 opening = line.split('"').nth(1).unwrap_or("").to_string();
-                println!("Parsed Opening: {}", opening);
+                //println!("Parsed Opening: {}", opening);
             } else if line.contains("TimeControl ") {
                 time_control = line.split('"').nth(1).unwrap_or("").to_string();
-                println!("Parsed Time Control: {}", time_control);
+               // println!("Parsed Time Control: {}", time_control);
             } else if line.contains("Termination ") {
                 termination = line.split('"').nth(1).unwrap_or("").to_string();
-                println!("Parsed Termination: {}", termination);
+                //println!("Parsed Termination: {}", termination);
             }
         } else if line.starts_with("1.") {
             // We have reached the moves section when the line starts with a number (like "1.")
             parsing_moves = true;
-            println!("Starting to parse moves...");
+            //println!("Starting to parse moves...");
         }
 
         if parsing_moves {
@@ -75,9 +75,9 @@ pub fn parse_pgn_to_game_record(pgn: &str) -> Option<GameRecord> {
                 if let Ok(chess_move) = ChessMove::from_san(&game.current_position(), mov) {
                     game.make_move(chess_move);
                     moves.push(mov.to_string());
-                    println!("Parsed Move: {}", mov);
+                    //println!("Parsed Move: {}", mov);
                 } else {
-                    println!("Failed to parse move: {}", mov);
+                    //println!("Failed to parse move: {}", mov);
                 }
             }
         }
@@ -89,7 +89,7 @@ pub fn parse_pgn_to_game_record(pgn: &str) -> Option<GameRecord> {
         "1/2-1/2" => "Draw".to_string(),
         _ => "Unknown".to_string(),
     };
-    println!("Final Result: {}", result_str);
+    //println!("Final Result: {}", result_str);
 
     Some(GameRecord {
         white,

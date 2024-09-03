@@ -1,7 +1,9 @@
-mod pgn_parser;
-
+use std::fs;
 use pgn_parser::{GameRecord, parse_pgn_to_game_record};
 use rusqlite::{params, Connection, Result};
+
+// Ensure this is correct for your project structure
+mod pgn_parser;
 
 fn create_db_connection() -> Result<Connection> {
     let conn = Connection::open("chess_games.db")?;
@@ -42,35 +44,30 @@ fn insert_game_record(conn: &Connection, game_record: &GameRecord) -> Result<()>
     Ok(())
 }
 
-
 fn main() -> Result<()> {
     let conn = create_db_connection()?;
 
-    let pgn_data = r#"
-    [Event "Rated Blitz game"]
-    [Site "https://lichess.org/c1rfp1ck"]
-    [White "dragansimic1946"]
-    [Black "aicho"]
-    [Result "0-1"]
-    [UTCDate "2013.06.30"]
-    [UTCTime "22:05:06"]
-    [WhiteElo "1685"]
-    [BlackElo "1577"]
-    [WhiteRatingDiff "-21"]
-    [BlackRatingDiff "+14"]
-    [ECO "A43"]
-    [Opening "Benoni Defense: Benoni Gambit Accepted"]
-    [TimeControl "300+0"]
-    [Termination "Time forfeit"]
+    // Read the file content
+    let file_content = fs::read_to_string("D:/Chess_Bot/Data/lichess_db_standard_rated_2013-07.pgn")
+        .expect("Failed to read PGN file");
 
-    1. d4 c5 2. dxc5 Qa5+ 3. Nd2 Qxc5 4. Nb3 Qc7 5. Nf3 d6 6. e4 e5 7. Bd3 Bg4 8. h3 Bxf3 9. Qxf3 Nf6 10. Bg5 Be7 11. O-O a5 12. c3 a4 13. Nd2 h6 0-1
-    "#;
+    // Split the content by two newlines, which is the typical separator for PGN games
+    let pgn_games: Vec<&str> = file_content.split("\n\n[Event").collect();
 
-    if let Some(record) = parse_pgn_to_game_record(pgn_data) {
-        insert_game_record(&conn, &record)?;
-        println!("Game record has been saved to the database.");
-    } else {
-        println!("Failed to parse PGN data");
+    for (index, pgn_data) in pgn_games.iter().enumerate() {
+        // We need to re-add the '[Event' tag to each PGN, except the first one.
+        let pgn_data = if index == 0 {
+            pgn_data.to_string()
+        } else {
+            format!("[Event{}", pgn_data)
+        };
+
+        if let Some(record) = parse_pgn_to_game_record(&pgn_data) {
+            insert_game_record(&conn, &record)?;
+            //println!("Game record has been saved to the database.");
+        } else {
+            println!("Failed to parse PGN data");
+        }
     }
 
     Ok(())
