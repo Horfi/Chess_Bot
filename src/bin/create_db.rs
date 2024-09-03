@@ -31,7 +31,7 @@ fn insert_game_record(conn: &Connection, game_record: &GameRecord) -> Result<()>
             game_record.white,
             game_record.black,
             game_record.result,
-            game_record.moves.join(" "),
+            game_record.moves.join(" "),  // Convert Vec<String> to a single string
             game_record.white_elo,
             game_record.black_elo,
             game_record.opening,
@@ -41,6 +41,7 @@ fn insert_game_record(conn: &Connection, game_record: &GameRecord) -> Result<()>
     )?;
     Ok(())
 }
+
 
 fn main() -> Result<()> {
     let conn = create_db_connection()?;
