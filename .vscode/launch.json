@@ -1,26 +1,156 @@
 {
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
-      {
-        "name": "Debug main.rs",
-        "type": "lldb",
-        "request": "launch",
-        "program": "${workspaceFolder}/target/debug/main.exe",
-        "args": [],
-        "cwd": "${workspaceFolder}",
-        "stopOnEntry": false,
-        "sourceLanguages": ["rust"]
-      },
-      {
-        "name": "Debug create_db.rs",
-        "type": "lldb",
-        "request": "launch",
-        "program": "${workspaceFolder}/target/debug/create_db.exe",
-        "args": [],
-        "cwd": "${workspaceFolder}",
-        "stopOnEntry": false,
-        "sourceLanguages": ["rust"]
-      }
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug executable 'create_db'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--bin=create_db",
+                    "--package=Chess_Bot"
+                ],
+                "filter": {
+                    "name": "create_db",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in executable 'create_db'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--bin=create_db",
+                    "--package=Chess_Bot"
+                ],
+                "filter": {
+                    "name": "create_db",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug executable 'main'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--bin=main",
+                    "--package=Chess_Bot"
+                ],
+                "filter": {
+                    "name": "main",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in executable 'main'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--bin=main",
+                    "--package=Chess_Bot"
+                ],
+                "filter": {
+                    "name": "main",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug executable 'pgn_parser'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--bin=pgn_parser",
+                    "--package=Chess_Bot"
+                ],
+                "filter": {
+                    "name": "pgn_parser",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in executable 'pgn_parser'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--bin=pgn_parser",
+                    "--package=Chess_Bot"
+                ],
+                "filter": {
+                    "name": "pgn_parser",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug executable 'train_nn'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--bin=train_nn",
+                    "--package=Chess_Bot"
+                ],
+                "filter": {
+                    "name": "train_nn",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in executable 'train_nn'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--bin=train_nn",
+                    "--package=Chess_Bot"
+                ],
+                "filter": {
+                    "name": "train_nn",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        }
     ]
-  }
-  
+}
