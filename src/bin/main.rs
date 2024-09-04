@@ -1,30 +1,20 @@
-mod pgn_parser;
+use chess::{Board, ChessMove, Game};
 
-use rusqlite::{Connection, Result};
+fn main() {
+    // Create a new chess game
+    let mut game = Game::new();
 
+    // Sample list of moves (in SAN format)
+    let moves = vec!["d4", "c5", "dxc5", "Qa5+"];
 
-
-fn main() -> Result<()> {
-    let conn = Connection::open("catSSs.db")?;
-
-    // Create the cat_colors table
-    conn.execute(
-        "CREATE TABLE IF NOT EXISTS cat_colors (
-            id INTEGER PRIMARY KEY,
-            name TEXT NOT NULL UNIQUE
-        )",
-        [],
-    )?;
-
-    // Create the cats table
-    conn.execute(
-        "CREATE TABLE IF NOT EXISTS cats (
-            id INTEGER PRIMARY KEY,
-            name TEXT NOT NULL,
-            color_id INTEGER NOT NULL REFERENCES cat_colors(id)
-        )",
-        [],
-    )?;
-
-    Ok(())
+    // Loop over the moves and display the board
+    for mov in moves {
+        if let Ok(chess_move) = ChessMove::from_san(&game.current_position(), mov) {
+            game.make_move(chess_move);
+            println!("Move made: {}", mov);
+            println!("{}", game.current_position());
+        } else {
+            println!("Failed to parse move: {}", mov);
+        }
+    }
 }
